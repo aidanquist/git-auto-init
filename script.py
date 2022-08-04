@@ -16,11 +16,11 @@ repo_name: str = input("repo name: ").replace(' ', '-')
 
 print(repo_name)
 
-# try:
-#     #Create repo
-#     authed.create_repo(name=repo_name, private=True)
-#     print("\033[92m {}\033[00m" .format(repo_name + " sucessfully created"))
-# except Exception as  e:
-#     #prints error message
-#     err: str = e.args[1]["message"]
-#     print("\033[91m {}\033[00m" .format(err))
+try:
+    #Create repo
+    authed.create_repo(name=repo_name, private=True)
+    print("\033[92m {}\033[00m" .format(repo_name + " sucessfully created"))
+except Exception as  e:
+    #prints error message
+    err: str = e.args[1]["message"]
+    print("\033[91m {}\033[00m" .format(err))
