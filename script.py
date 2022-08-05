@@ -1,39 +1,31 @@
 #script
 import requests
-from pprint import pprint
+import os
+import sys
+from sys import platform
 from github import Github
 
-class Invalid_input(Exception):
-    def __init__(self):
-      super().__init__()
-    def __str__(self):
-        return "Invalid input"
+#signs the user in
+TOKEN : str = input("Github personal access token: ")
+g = Github(TOKEN)
+authed = g.get_user()
 
+#prompts for the repo name
+repo_name: str = str(sys.argv[0])
+#prompt private or not
+private_repo: bool = True if (sys.argv[0] == "private" or sys.argv[0] == "-p" ) else False
 
 try:
-    #signs the user in
-    TOKEN : str = input("Github personal access token: ")
-    g = Github(TOKEN)
-    authed = g.get_user()
-
-    #prompts for the repo name
-    repo_name: str = input("repo name: ").replace(' ', '-')
-    private_repo_question: chr = input ("private repo (Y/n): ")[0]
-    if (private_repo_question.upper() == "Y"):
-        private_repo: bool = True
-    elif (private_repo_question.upper() == "N"):
-        private_repo: bool = False
+    if (platform == "linux" or platform == "linux2" or platform == "darwin"):
+        print()
     else:
-        raise Invalid_input()
-except Invalid_input:
-    print("\033[91m {}\033[00m" .format("Invalid Input"))
-    exit()
+        # Windows...
+        print()
 
-try:
     #Create remote repo
     authed.create_repo(name=repo_name, private=private_repo)
-    print("\033[92m {}\033[00m" .format(repo_name + " sucessfully created"))
+    print("\033[92m {}\033[00m".format(repo_name + " sucessfully created"))
 except Exception as  e:
     #prints error message
     err: str = e.args[1]["message"]
-    print("\033[91m {}\033[00m" .format(err))
+    print("\033[91m {}\033[00m".format(err))
